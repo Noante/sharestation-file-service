@@ -1,0 +1,29 @@
+{
+  "name": "file_service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "dev:local": "NODE_ENV=LOCAL nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Noante/sharestation-file-service.git"
+  },
+  "contributors": [
+    "Caio Morais <https://github.com/CaioV1>",
+    "Caique Oliveira <https://github.com/xguhkaa>"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Noante/sharestation-file-service/issues"
+  },
+  "homepage": "https://github.com/Noante/sharestation-file-service#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^9.0.2",
+    "express": "^4.17.1"
+  }
+}
