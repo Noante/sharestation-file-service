@@ -1,33 +1,39 @@
 const fs = require("fs");
+const path = require("path");
+const Busboy = require("busboy");
 
 class FileController {
 
-    async getFile(req, res, next) {
+    async saveFile(req, res, next) {
 
-        try {
+        const busboy = new Busboy({headers: req.headers});
 
-            const file = req.body;
-            const base64Image = file.data.split(';base64,').pop();
+        busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
 
-            fs.writeFile(file.name, base64Image, { encoding: "base64" }, (error) => {
+            file.on('data', function(data) {
+                console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
+             });
+                   
                 
-                if(error){
-                    console.error(error);
-                    res.status(500);
-                    res.json({ "msg": "Ocorreu um erro ao salvar a imagem" });
-                } else {
-                    res.status(200);
-                    res.json({ "msg": "Imagem salva com sucesso" });
-                }
+             file.on('end', function() {
+               console.log('File [' + fieldname + '] Finished');
+             });
 
-            })
+            const saveTo = path.join(__dirname, `uploads/${filename}`);
+            console.log(saveTo);
             
-        } catch (error) {
+            file.pipe(fs.createWriteStream(saveTo));
 
-            res.status(500);
-            res.send({"error": error});
-            
-        }
+        });
+
+        busboy.on("finish", () => {
+
+            res.writeHead(200, {Connection: "closed"});
+            res.end("Upload completo");
+
+        });
+
+        req.pipe(busboy);
 
     }
 
